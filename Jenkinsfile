@@ -32,6 +32,7 @@ pipeline {
             unstash 'code'
             sh 'ci/build-app.sh'
             archiveArtifacts 'app/build/libs/'
+            stash excludes: '.git', name: 'code'
           }
         }
       }
@@ -47,6 +48,5 @@ pipeline {
           sh 'ci/push-docker.sh'
         }
     }
-
   }
 }
