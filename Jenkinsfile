@@ -1,9 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('Unstash'){
+    stage('__clone down__') {
       steps {
-        unstash 'code'
+        
+          stash excludes: '.git', name: 'code'
       }
     }
     stage('Say Hello') {
@@ -25,18 +26,11 @@ pipeline {
             skipDefaultCheckout(true)
           }
           steps {
+            unstash 'code'
             sh 'ci/build-app.sh'
             archiveArtifacts 'app/build/libs/'
           }
         }
-      }
-    }
-
-    
-    stage('__clone down__') {
-      steps {
-        
-          stash excludes: '.git', name: 'code'
       }
     }
 
