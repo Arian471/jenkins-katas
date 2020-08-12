@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  enviroment {
+    docker_username = "arian471"
+  }
   stages {
     stage('__clone down__') {
       steps {
@@ -32,6 +35,17 @@ pipeline {
           }
         }
       }
+    }
+    stage("push stuff"){
+      enviroment{
+        DOCKERCREDS = credentials("docker_login")
+      }
+        steps {
+          unstash 'code' //unstash the repository code
+          sh 'ci/build-docker.sh'
+          sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin' //login to docker hub with the credentials above
+          sh 'ci/push-docker.sh'
+        }
     }
 
   }
