@@ -1,6 +1,6 @@
 pipeline {
   agent any
-  enviroment {
+  environment {
     docker_username = "arian471"
   }
   stages {
@@ -37,7 +37,7 @@ pipeline {
       }
     }
     stage("push stuff"){
-      enviroment{
+      environment{
         DOCKERCREDS = credentials("docker_login")
       }
         steps {
